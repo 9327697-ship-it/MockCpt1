@@ -4,49 +4,129 @@
   
 <head>
    <!--The head section contains general information about the webpage.-->
-   <title>     </title>
+   <title>Za Randomiza!</title>
    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"> </script>
    <style>
-       /*The style section controls how pieces of your webpage look.*/
-      body {
-        font-family: Arial, sans-serif;
-        background-color: azure;
-        text-align: center;
-        padding:20px;
-      }
+       /*The style section controls how pieces of webpage look.*/
+       body {
+           font-family: Arial, sans-serif;
+           background-color: #f4f4f9;
+           text-align: center;
+           padding: 20px;
+       }
 
-      header h2{
+       header h2 {
+           font-size: 24px;
+           margin-bottom: 5px;
+       }
 
-        font-size: 24px;
-        margin-bottom: 5px;
+       .app-box {
+           background-color: white;
+           max-width: 420px;
+           margin: 0 auto;
+           padding: 20px;
+           border: 2px solid #333;
+           border-radius: 8px;
+       }
 
-      }
-      .app-box {
+       textarea {
+           width: 90%;
+           height: 70px;
+           padding: 8px;
+           font-size: 14px;
+           border: 2px solid #444;
+           border-radius: 4px;
+           resize: none;
+       }
 
-        background-color:peachpuff;
-        max-width: 420px;
-        margin: 0 auto;
-        padding: 20px;
-        border: 2px solid black;
-        border-radius: 8px;
-      }
+       .decide-btn {
+           background-color: #007bff;
+           color: white;
+           border: none;
+           padding: 10px 20px;
+           font-size: 15px;
+           border-radius: 4px;
+           cursor: pointer;
+           margin-top: 10px;
+       }
 
-      
-   
-   
+       .decide-btn:hover {
+           background-color: #0056b3;
+       }
+
+       .thinking-text {
+           font-style: italic;
+           color: #666;
+           margin-top: 15px;
+       }
+
+       .result-box {
+           border: 2px solid #000;
+           height: 80px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           margin: 15px auto;
+           font-size: 22px;
+           font-weight: bold;
+           background-color: #f9f9f9;
+           width: 90%;
+       }
+
+       .question-text {
+           font-size: 13px;
+           margin-top: 15px;
+       }
+
+       .option-btn {
+           background-color: #e0e0e0;
+           border: 1px solid #666;
+           padding: 6px 20px;
+           font-size: 14px;
+           margin: 0 5px;
+           cursor: pointer;
+           border-radius: 4px;
+       }
+
+       .option-btn:hover {
+           background-color: #ccc;
+       }
+
+       footer {
+           margin-top: 30px;
+           font-size: 12px;
+           color: #777;
+       }
    </style>
 </head>
-
 
 <body>
    <!--The body section contains the content of your webpage.-->
    <header>
-       <h2>    </h2>
+       <h2>! Welcome to Za Randomiza !</h2>
    </header>
-   <div x-data="webApp">
-   
 
+   <div x-data="webApp" class="app-box">
+       <p>What do you need help deciding?</p>
 
+       <!-- Input text area bound to Alpine state -->
+       <textarea x-model="userInput" placeholder="Enter Items... (separate with commas)"></textarea>
+       <br>
+
+       <!-- Main action button -->
+       <button class="decide-btn" @click="decideForMe()">Decide for me!</button>
+
+       <p class="thinking-text">Hmmm... Thinking...</p>
+
+       <!-- Result Box display -->
+       <div class="result-box" x-text="resultText"></div>
+
+       <!-- Yes / No follow up -->
+       <p class="question-text">If you would like to do another list or this Press Yes/No</p>
+       <div>
+           <button class="option-btn" @click="handleChoice('Yes')">Yes</button>
+           <button class="option-btn" @click="handleChoice('No')">No</button>
+       </div>
    </div>
   
    <footer>
@@ -59,16 +139,65 @@
        //The script section contains the JavaScript logic
        document.addEventListener('alpine:init', () => {
            Alpine.data('webApp', () => ({
-               
+               // Reactive state variables
+               userInput: '',
+               resultText: 'Winner: ___ !',
 
+               // 1. PROCEDURE WITH PARAMETER
+               // Updates the result display state
+               displayResult(selectedItem) {
+                   // SELECTION
+                   if (selectedItem === "") {
+                       this.resultText = "Item ___ !!!";
+                   } else {
+                       this.resultText = selectedItem + " !!!";
+                   }
+               },
 
+               // 2. MAIN FUNCTION (SEQUENCE)
+               decideForMe() {
+                   var rawArray = this.userInput.split(",");
+                   
+                   // 3. LIST / ARRAY
+                   var cleanList = [];
 
+                   // 4. ITERATION: Loop through all input items
+                   for (var i = 0; i < rawArray.length; i++) {
+                       var item = rawArray[i].trim();
 
+                       // 5. SELECTION: Keep valid non-empty items
+                       if (item !== "") {
+                           cleanList.push(item);
+                       }
+                   }
 
+                   // SELECTION: Check for empty input
+                   if (cleanList.length === 0) {
+                       alert("Please enter items separated by commas!");
+                       return;
+                   }
 
+                   // Math calculation to select random index
+                   var randomIndex = Math.floor(Math.random() * cleanList.length);
+                   var chosenOption = cleanList[randomIndex];
+
+                   // Call procedure with parameter
+                   this.displayResult(chosenOption);
+               },
+
+               // Handles Yes/No button actions
+               handleChoice(userChoice) {
+                   // SELECTION
+                   if (userChoice === "Yes") {
+                       this.userInput = "";
+                       this.displayResult("");
+                       alert("Cleared! Type in your new list.");
+                   } else if (userChoice === "No") {
+                       alert("Keeping list! Click 'Decide for me!' to pick again.");
+                   }
+               }
            }));
        });
    </script>
 </body>
 </html>
-
