@@ -10,7 +10,7 @@
        /*The style section controls how pieces of webpage look.*/
        body {
            font-family: Arial, sans-serif;
-           background-color: #f4f4f9;
+           background-color: antiquewhite;
            text-align: center;
            padding: 20px;
        }
@@ -21,8 +21,8 @@
        }
 
        .app-box {
-           background-color: white;
-           max-width: 420px;
+           background-color: azure;
+           max-width: 640px;
            margin: 0 auto;
            padding: 20px;
            border: 2px solid #333;
@@ -103,7 +103,7 @@
 <body>
    <!--The body section contains the content of your webpage.-->
    <header>
-       <h2>! Welcome to Za Randomiza !</h2>
+       <h2>Welcome to Za Randomiza!🐵 </h2>
    </header>
 
    <div x-data="webApp" class="app-box">
@@ -121,11 +121,10 @@
        <!-- Result Box display -->
        <div class="result-box" x-text="resultText"></div>
 
-       <!-- Yes / No follow up -->
-       <p class="question-text">If you would like to do another list or this Press Yes/No</p>
+       <!-- follow up -->
+       <p class="question-text">If you would like to do another list?</p>
        <div>
-           <button class="option-btn" @click="handleChoice('Yes')">Yes</button>
-           <button class="option-btn" @click="handleChoice('No')">No</button>
+           <button class="option-btn" @click="handleChoice('Yes')">Clear</button>
        </div>
    </div>
   
@@ -141,7 +140,7 @@
            Alpine.data('webApp', () => ({
                // Reactive state variables
                userInput: '',
-               resultText: 'Winner: ___ !',
+               resultText: 'Winner: "___" !',
 
                // 1. PROCEDURE WITH PARAMETER
                // Updates the result display state
